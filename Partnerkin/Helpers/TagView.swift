@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TagView: View {
-    var text: String
+    let text: String
     let color: Color
     
     var body: some View {

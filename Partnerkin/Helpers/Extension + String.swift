@@ -30,7 +30,7 @@ extension String {
         guard let startDate = inputFormatter.date(from: self),
               let endDate = inputFormatter.date(from: endDate) else { return self }
 
-        let formattedStartDate = self.formattedDate() // Используем уже существующий метод
+        let formattedStartDate = self.formattedDate()
 
         let calendar = Calendar.current
         let daysCount = calendar.dateComponents([.day], from: startDate, to: endDate).day ?? 0

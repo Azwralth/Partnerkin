@@ -7,23 +7,23 @@
 
 import Foundation
 
-struct ConferenceResponse: Codable {
+struct ConferenceResponse: Decodable {
     let data: ConferenceData
 }
 
-struct ConferenceDetailResponse: Codable {
+struct ConferenceDetailResponse: Decodable {
     let data: ConferenceDetails
 }
 
-struct ConferenceData: Codable {
+struct ConferenceData: Decodable {
     let result: [ConferenceItem]
 }
 
-struct ConferenceItem: Codable {
+struct ConferenceItem: Decodable {
     let conference: ConferenceDetails
 }
 
-struct ConferenceDetails: Codable {
+struct ConferenceDetails: Decodable {
     let id: Int
     let name: String
     let format: String
@@ -48,16 +48,16 @@ struct ConferenceDetails: Codable {
     }
 }
 
-struct ConferenceType: Codable {
+struct ConferenceType: Decodable {
     let name: String
 }
 
-struct ConferenceImage: Codable {
+struct ConferenceImage: Decodable {
     let id: String
     let url: String
 }
 
-struct ConferenceCategory: Codable {
+struct ConferenceCategory: Decodable {
     let id: Int
     let name: String
     let url: String
