@@ -11,32 +11,38 @@ struct DetailView: View {
     @StateObject var viewModel = DetailViewModel(networkManager: NetworkManager())
     @StateObject var imageViewModel = ImageLoaderViewModel()
     @Environment(\.presentationMode) var presentationMode
+        
+    @EnvironmentObject private var coordinator: Coordinator
+    
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                conferenceHeader
-                conferenceImage
-                conferenceCategories
-                conferenceDateAndLocation
-                registrationButton
-                conferenceAbout
-                
-                Spacer()
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    conferenceHeader
+                    conferenceImage
+                    conferenceCategories
+                    conferenceDateAndLocation
+                    registrationButton
+                    conferenceAbout
+                    
+                    Spacer()
+                }
+                .padding()
             }
-            .padding()
-        }
-        .task {
-            await viewModel.fetchConferences()
-            await imageViewModel.loadImage(from: viewModel.conference?.image.url ?? "")
-        }
-        .scrollIndicators(.hidden)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                backButton
+            .navigationDestination(for: Coordinator.Step.self) { destination in
+                destination.view
             }
-        }
+            .task {
+                await viewModel.fetchConferences()
+                await imageViewModel.loadImage(from: viewModel.conference?.image.url ?? "")
+            }
+            .scrollIndicators(.hidden)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    backButton
+                }
+            }
     }
 }
 
@@ -96,7 +102,7 @@ private extension DetailView {
 
     var registrationButton: some View {
         Button {
-           // action
+            coordinator.next(.dateDetail(.dateDetail))
         } label: {
             Text("Регистрация")
                 .customFont(type: .interSemibold, size: 16)
@@ -129,4 +135,5 @@ private extension DetailView {
 
 #Preview {
     DetailView()
+        .environmentObject(Coordinator())
 }

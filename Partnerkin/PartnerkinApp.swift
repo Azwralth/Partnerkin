@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct PartnerkinApp: App {
+    @StateObject var coordinator = Coordinator()
+    
     var body: some Scene {
         WindowGroup {
             MainView()

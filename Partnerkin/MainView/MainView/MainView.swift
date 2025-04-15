@@ -9,19 +9,26 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel(networkManager: NetworkManager())
-
+        
+    @EnvironmentObject private var coordinator: Coordinator
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $coordinator.path) {
             ScrollView {
                 VStack {
                     ForEach(viewModel.conferences, id: \.id) { conference in
-                        NavigationLink(destination: DetailView()) {
+                        Button {
+                            coordinator.next(.conferenceDetail(.conferenceDetail))
+                        } label: {
                             MainViewCell(conference: conference)
                                 .padding(.horizontal)
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
                 }
+            }
+            .navigationDestination(for: Coordinator.Step.self) { destination in
+                destination.view
             }
             .scrollIndicators(.hidden)
             .navigationTitle("Конференции")
@@ -35,4 +42,5 @@ struct MainView: View {
 
 #Preview {
     MainView()
+        .environmentObject(Coordinator())
 }
